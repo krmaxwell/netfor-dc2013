@@ -165,8 +165,14 @@ The PCAP contains something really interesting this time: lots of VOIP traffic. 
 
 And sure enough: Victoria his wife killed him. 
 
-ToDo
-====
-- [ ] Feedback from Renegade (should lead to more items)
-- [ ] Lessons learned
-- [x] Embed media files
+Lessons learned
+---------------
+
+In contest terms, we learned a few things for next year:
+
+- Some contests don't really announce anything until 3-4 weeks before DEF CON. So don't think about it too much until July.
+- Think about logistics: Have a designated "office" in somebody's hotel room, possibly a runner or other support person to go to contest area, and food & beverages on hand.
+- Work in parallel: have team members working on different approaches using different tools at the same time.
+
+In network forensics terms, I learned a lot about tools other than Wireshark and Python: NetworkMiner, Bro, chaosreader, other stuff in SecurityOnion.
+

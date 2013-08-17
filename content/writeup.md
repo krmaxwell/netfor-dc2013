@@ -13,6 +13,9 @@ The primary rule is: "There are eight contest rounds containing eight evidence f
 
 So at noon Friday, the contest released the password to the TrueCrypt file and we were off. Due to some logistical issues on our end, the DC214 team did not get started for over 24 hours. But once we did, we tore through it. Here's how.
 
+Analysis
+========
+
 Round 1
 -------
 
@@ -89,7 +92,7 @@ A file named "r3nd3zv0us" sure does look interesting and relevant. I believe I'd
 
 There it is: **S3cr3tVV34p0n**. On a hunch, I attempted to mount the r3nd3zv0us file in TrueCrypt with that password, and it worked! The volume contains three files: a text note, a video file, and a JPEG. The text note just says "See You Soon! Betty" and I couldn't get the video file to play on my system. The JPEG file, though, contained an image of the famous "Welcome to Fabulous Las Vegas, Nevada" sign. 
 
-![Las Vegas](lv.jpg)
+![Las Vegas](|filename|/images/lv.jpg)
 
 Round 3
 -------
@@ -103,7 +106,7 @@ Well this is a clue. What's on his phone? According to the HTTP object export, p
 
 Watching the file, we see a document titled "**TOP SECRET**" and hear a woman's voice threatening to release some files, then saying "remember who you're dealing with" as the camera pans to a printout of an Oregon Trail image that says "you have died of dysentery". Weird threat, but that's the answer: "dysentery".
 
-![You have died of dysentery](dysentery.jpg)
+![You have died of dysentery](|filename|/images/dysentery.jpg)
 
 Round 4
 -------
@@ -119,7 +122,7 @@ This turned out to be one of the more complicated rounds, largely due to simple 
 
 That gives us context but it's not actually the password - she's telling him he already knows it. That means we need to go back and see what else... wait, there's more to the message. It's all in escaped HTML, though, which is a pain to read, and there's a lot of it, unlike Round 1. I could never quite get it to format properly (at least not without more time than we wanted to spend), so one of my team mates working in parallel with a different toolset broke out NetworkMiner. That yielded a decently-formatted KML file for use in Google Earth. This took a bit of doing, as up until this point we were working on entirely air-gapped systems, being at DEF CON and all. However, if we wanted to finish, we needed to take some risks, so we installed the application and saved off the KML. Apparently we didn't get **all** the encodings right, so it took one tiny bit of manual cleanup, guided by error messages from Google Earth. That didn't take too long, and we had the word "Brutus" spelled in cursive right over the map of Caesar's Palace, Las Vegas. On to the next round.
 
-![Brutus](brutus.jpg)
+![Brutus](|filename|/images/brutus.jpg)
 
 Round 5
 -------
@@ -134,7 +137,7 @@ Wait, what? This isn't network forensics, is it? But just like in real life, we 
 
 Oh yeah, Android is Linux: not GNU/Linux, but Android/Linux. The directory "/HWUserData" looks like it's analogous to "/home", and when we poke around, we find a "DCIM" folder that contains a JPG of some dude laid out cold in an alley next to a trash can. Could this be Gregory? Where is it? In "/HWUserData/Android/data/com.cooliris.media/cache/", we find a number of images of his body, laid at different angles. The assailant (killer) posed his body a few different ways for the camera, playing with us. Sickos! We didn't find any geolocation data in the images, unfortunately, and this didn't look like enough to answer the question. We found lots of other data about the contest (like the email addresses they appeared to use), but it clearly didn't fit the storyline. Finally in "/data/data/com.android.browser/cache/webviewCache/6835a5ae" we found a JSON file that indicated he'd been checking the weather in Seattle, WA. The answer "Killed in Seattle" got us to the next round.
 
-![Image of body](IMG_20130705_150833.jpg)
+![Image of body](|filename|/images/IMG_20130705_150833.jpg)
 
 Round 6
 -------

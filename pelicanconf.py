@@ -6,7 +6,7 @@ AUTHOR = u'Kyle Maxwell'
 SITENAME = u'Network Forensics Contest Writeup 2013'
 SITEURL = ''
 
-TIMEZONE = 'Europe/Paris'
+TIMEZONE = 'US/Central'
 
 DEFAULT_LANG = u'en'
 

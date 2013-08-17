@@ -1,6 +1,10 @@
-Network Forensics Contest - Defcon 2013
-=======================================
+Title: Network Forensics Contest - DEF CON 2013
+Date: 2013-08-14
+Author: Kyle Maxwell
+Summary: Network Forensics Contest writeup from DEF CON 2013
 
+Introduction
+============
 To start the [contest](http://forensicscontest.com/2013/07/09/join-us-for-black-hat-and-defcon), we were given a CD containing a TrueCrypt volume and a few associated files, most notably the introduction to the contest:
 
 > Introduction: Jack Stone has been retired from the Agency for nearly 7 years. After his retirement Jack found himself looking to bring some adventure back into his life. Jack got himself a private investigator license and opened his own firm. Rock Solid Investigations, LLC. has been solving interesting and complex cases for nearly 3 years. Jack's business has grown to include his former partner Timothy Jones and his newest hire, you, a professional forensic analyst. Together the staff at Rock Solid Investigations has over 50 years of investigative experience. Rock Solid is one of the most sought after PI companies in North America. However, all of their success and experience could not prepare them for what lay ahead. It was a usual Tuesday afternoon at Rock Solid. Jack was on the phone talking to potential clients, Tim was out on recon, and you were using e-discovery techniques to track down a runaway bride. Just then a strange woman walked in the front door. Jack finished his phone call and greeted the visitor. Victoria Jensen hired Rock Solid to determine whether or not her husband Gregory Jensen was cheating on her. Gregory was the CEO of Impressive Dynamics a company specializing in technology and weapons invention and manufacturing. Impressive Dynamics holds many DoD and other government contracts. This case would not be low profile. The firm has hired you as a forensic investigator to investigate the alleged affair. Can you solve the case?
@@ -85,7 +89,7 @@ A file named "r3nd3zv0us" sure does look interesting and relevant. I believe I'd
 
 There it is: **S3cr3tVV34p0n**. On a hunch, I attempted to mount the r3nd3zv0us file in TrueCrypt with that password, and it worked! The volume contains three files: a text note, a video file, and a JPEG. The text note just says "See You Soon! Betty" and I couldn't get the video file to play on my system. The JPEG file, though, contained an image of the famous "Welcome to Fabulous Las Vegas, Nevada" sign. 
 
-![Las Vegas](LV.JPG)
+![Las Vegas](lv.jpg)
 
 Round 3
 -------

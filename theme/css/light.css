@@ -1,4 +1,4 @@
-@import 'solarized';
+@import 'solarized.css';
 
 @content: @base01;
 @backgroundd: @base2;

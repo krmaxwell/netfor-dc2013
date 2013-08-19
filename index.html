@@ -1,66 +1,174 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>Network Forensics Contest Writeup 2013 &laquo; Texts</title>
-    <meta charset="utf-8"></meta>
+<head>
+        <title>Network Forensics Contest Writeup 2013</title>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="http://technoskald.github.io/netfor-dc2013/theme/css/main.css" type="text/css" />
+        <link href="http://technoskald.github.io/netfor-dc2013/" type="application/atom+xml" rel="alternate" title="Network Forensics Contest Writeup 2013 ATOM Feed" />
+        
+        <!--[if IE]>
+                <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 
-    
-    <!-- css -->
-    <link href="http://fonts.googleapis.com/css?family=Amaranth|Maven+Pro:400,700|Inconsolata" rel="stylesheet" type="text/css">
+        <!--[if lte IE 7]>
+                <link rel="stylesheet" type="text/css" media="all" href="http://technoskald.github.io/netfor-dc2013/css/ie.css"/>
+                <script src="http://technoskald.github.io/netfor-dc2013/js/IE8.js" type="text/javascript"></script><![endif]-->
 
-    <link href="http://technoskald.github.io/netfor-dc2013/theme/css/normalize.css" media="screen, projection" rel="stylesheet"></link>
-    <link href="http://technoskald.github.io/netfor-dc2013/theme/css/screen.css" media="screen, projection" rel="stylesheet"></link>
-    <link href="http://technoskald.github.io/netfor-dc2013/theme/css/dark.css" media="screen, projection" rel="stylesheet"></link>
-    <link href="http://technoskald.github.io/netfor-dc2013/theme/css/light.css" media="screen, projection" rel="stylesheet"></link>
-    <link href="http://technoskald.github.io/netfor-dc2013/theme/css/code.css" media="screen, projection" rel="stylesheet"></link>
+        <!--[if lt IE 7]>
+                <link rel="stylesheet" type="text/css" media="all" href="http://technoskald.github.io/netfor-dc2013/css/ie6.css"/><![endif]-->
 
-    <!-- info -->
-    <meta name="author" content="Kyle Maxwell"></meta>
-    <meta name="description" content=""></meta>
+</head>
 
-      </head>
-  <body>
-    <div id="page">
-      <header class="page">
-	<h1>
-	  <a href="http://technoskald.github.io/netfor-dc2013" title="Home">Network Forensics Contest Writeup 2013</a>
-	</h1>
-	<nav>
-	  <ul>
-                   	</nav>     
-      </header>
+<body>
+                
+            
 
-      <section id="content">
-        <section class="article list">
-  <article class="article item hentry">
-    <header>
-      <h3 class="title">
-        <a  rel="bookmark" title="Permalink to Network Forensics Contest - DEF CON 2013" 
-            href="http://technoskald.github.io/netfor-dc2013/network-forensics-contest-def-con-2013.html">
-          Network Forensics Contest - DEF CON 2013
-        </a>
-        <span class="seperator">»</span>
-        <time class="date" title="2013-08-14T00:00:00">Wed 14 August 2013</time>
-      </h3> 
-    </header>
-  </article>
-</section>
-      </section>
+                            <header>
+                <h1><a href="http://technoskald.github.io/netfor-dc2013/network-forensics-contest-def-con-2013.html" id="page-title">Network Forensics Contest - DEF CON 2013</a></h1>
+                <span id="sitename"><a href="http://technoskald.github.io/netfor-dc2013" id="site-title">Network Forensics Contest Writeup 2013 </a> &sdot;</span>
+                <time datetime="2013-08-14T00:00:00">Wed 14 August 2013</time>            </header>
+
+            <article>
+                <h1>Introduction</h1>
+<p>To start the <a href="http://forensicscontest.com/2013/07/09/join-us-for-black-hat-and-defcon">contest</a>, we were given a CD containing a TrueCrypt volume and a few associated files, most notably the introduction to the contest:</p>
+<blockquote>
+<p>Introduction: Jack Stone has been retired from the Agency for nearly 7 years. After his retirement Jack found himself looking to bring some adventure back into his life. Jack got himself a private investigator license and opened his own firm. Rock Solid Investigations, LLC. has been solving interesting and complex cases for nearly 3 years. Jack's business has grown to include his former partner Timothy Jones and his newest hire, you, a professional forensic analyst. Together the staff at Rock Solid Investigations has over 50 years of investigative experience. Rock Solid is one of the most sought after PI companies in North America. However, all of their success and experience could not prepare them for what lay ahead. It was a usual Tuesday afternoon at Rock Solid. Jack was on the phone talking to potential clients, Tim was out on recon, and you were using e-discovery techniques to track down a runaway bride. Just then a strange woman walked in the front door. Jack finished his phone call and greeted the visitor. Victoria Jensen hired Rock Solid to determine whether or not her husband Gregory Jensen was cheating on her. Gregory was the CEO of Impressive Dynamics a company specializing in technology and weapons invention and manufacturing. Impressive Dynamics holds many DoD and other government contracts. This case would not be low profile. The firm has hired you as a forensic investigator to investigate the alleged affair. Can you solve the case?</p>
+</blockquote>
+<p>The primary rule is: "There are eight contest rounds containing eight evidence files. You must analyze the evidence files in order to answer the question(s) which go along with each capture. The answers to those questions will be used to unlock the next round of the contest."</p>
+<p>So at noon Friday, the contest released the password to the TrueCrypt file and we were off. Due to some logistical issues on our end, the DC214 team did not get started for over 24 hours. But once we did, we tore through it. Here's how.</p>
+<h1>Analysis</h1>
+<h2>Round 1</h2>
+<p>Password: <code>SYN-SYNACK-ACK=STart!@#$&amp;@</code></p>
+<p>The TrueCrypt file contained a Round1 folder and seven more TrueCrypt volumes (Round[2-8].tc). Within Round1/ we found an HTML file and round1.pcap.</p>
+<blockquote>
+<p>Having accepted the Jensen case, Jack and his team install network taps and wireless capture devices in Mr. Jensen's business and home. During monitoring, Jack and his team discover an interesting suspect, Betty. This could be the woman Mrs. Jensen fears her husband is having an affair with. Jack assigns you the forensic analyst to look further into the information capture. You learn that a meeting has been setup. 
+What day of the week is the meeting scheduled for? </p>
+</blockquote>
+<p>Pulling open the .pcap in Wireshark, we found lots of HTTP traffic, mostly around Google Images searches, that we found to be totally irrelevant with a few possible red herrings. But the first TCP stream consisted of an IRC chat:</p>
+<div class="highlight"><pre><span class="n">PRIVMSG</span> <span class="err">#</span><span class="n">S3cr3tSp0t</span> <span class="o">:</span><span class="n">Hi</span> <span class="n">Greg</span> <span class="o">:</span><span class="p">)</span>
+<span class="o">:</span><span class="n">D34thM3rch4nt</span><span class="o">!~</span><span class="n">blah2</span><span class="err">@</span><span class="mf">7FF</span><span class="mo">07</span><span class="n">A37</span><span class="mf">.29E7</span><span class="n">D414</span><span class="p">.</span><span class="n">B9027CEB</span><span class="p">.</span><span class="n">IP</span> <span class="n">PRIVMSG</span> <span class="err">#</span><span class="n">S3cr3tSp0t</span> <span class="o">:</span><span class="n">Hi</span> <span class="n">Betty</span>
+<span class="o">:</span><span class="n">D34thM3rch4nt</span><span class="o">!~</span><span class="n">blah2</span><span class="err">@</span><span class="mf">7FF</span><span class="mo">07</span><span class="n">A37</span><span class="mf">.29E7</span><span class="n">D414</span><span class="p">.</span><span class="n">B9027CEB</span><span class="p">.</span><span class="n">IP</span> <span class="n">PRIVMSG</span> <span class="err">#</span><span class="n">S3cr3tSp0t</span> <span class="o">:</span><span class="n">what</span> <span class="n">day</span> <span class="k">do</span> <span class="n">you</span> <span class="n">want</span> <span class="n">to</span> <span class="n">meet</span> <span class="n">up</span><span class="o">?</span>
+<span class="n">PING</span> <span class="o">:</span><span class="n">hades</span><span class="p">.</span><span class="n">de</span><span class="p">.</span><span class="n">eu</span><span class="p">.</span><span class="n">SwiftIRC</span><span class="p">.</span><span class="n">net</span>
+<span class="n">PONG</span> <span class="o">:</span><span class="n">hades</span><span class="p">.</span><span class="n">de</span><span class="p">.</span><span class="n">eu</span><span class="p">.</span><span class="n">SwiftIRC</span><span class="p">.</span><span class="n">net</span>
+<span class="n">PING</span> <span class="o">:</span><span class="n">hades</span><span class="p">.</span><span class="n">de</span><span class="p">.</span><span class="n">eu</span><span class="p">.</span><span class="n">SwiftIRC</span><span class="p">.</span><span class="n">net</span>
+<span class="n">PONG</span> <span class="o">:</span><span class="n">hades</span><span class="p">.</span><span class="n">de</span><span class="p">.</span><span class="n">eu</span><span class="p">.</span><span class="n">SwiftIRC</span><span class="p">.</span><span class="n">net</span>
+<span class="n">PING</span> <span class="o">:</span><span class="n">hades</span><span class="p">.</span><span class="n">de</span><span class="p">.</span><span class="n">eu</span><span class="p">.</span><span class="n">SwiftIRC</span><span class="p">.</span><span class="n">net</span>
+<span class="n">PONG</span> <span class="o">:</span><span class="n">hades</span><span class="p">.</span><span class="n">de</span><span class="p">.</span><span class="n">eu</span><span class="p">.</span><span class="n">SwiftIRC</span><span class="p">.</span><span class="n">net</span>
+<span class="n">PRIVMSG</span> <span class="err">#</span><span class="n">S3cr3tSp0t</span> <span class="o">:&amp;</span><span class="err">#</span><span class="n">x48</span><span class="p">;</span><span class="o">&amp;</span><span class="err">#</span><span class="n">x6F</span><span class="p">;</span><span class="o">&amp;</span><span class="err">#</span><span class="n">x77</span><span class="p">;</span><span class="o">&amp;</span><span class="err">#</span><span class="n">x20</span><span class="p">;</span><span class="o">&amp;</span><span class="err">#</span><span class="n">x64</span><span class="p">;</span><span class="o">&amp;</span><span class="err">#</span><span class="n">x6F</span><span class="p">;</span><span class="o">&amp;</span><span class="err">#</span><span class="n">x65</span><span class="p">;</span><span class="o">&amp;</span><span class="err">#</span><span class="n">x73</span><span class="p">;</span><span class="o">&amp;</span><span class="err">#</span><span class="n">x20</span><span class="p">;</span><span class="o">&amp;</span><span class="err">#</span><span class="n">x57</span><span class="p">;</span><span class="o">&amp;</span><span class="err">#</span><span class="n">x65</span><span class="p">;</span><span class="o">&amp;</span><span class="err">#</span><span class="n">x64</span><span class="p">;</span><span class="o">&amp;</span><span class="err">#</span><span class="n">x6E</span><span class="p">;</span><span class="o">&amp;</span><span class="err">#</span><span class="n">x65</span><span class="p">;</span><span class="o">&amp;</span><span class="err">#</span><span class="n">x73</span><span class="p">;</span><span class="o">&amp;</span><span class="err">#</span><span class="n">x64</span><span class="p">;</span><span class="o">&amp;</span><span class="err">#</span><span class="n">x61</span><span class="p">;</span><span class="o">&amp;</span><span class="err">#</span><span class="n">x79</span><span class="p">;</span><span class="o">&amp;</span><span class="err">#</span><span class="n">x20</span><span class="p">;</span><span class="o">&amp;</span><span class="err">#</span><span class="n">x73</span><span class="p">;</span><span class="o">&amp;</span><span class="err">#</span><span class="n">x6F</span><span class="p">;</span><span class="o">&amp;</span><span class="err">#</span><span class="n">x75</span><span class="p">;</span><span class="o">&amp;</span><span class="err">#</span><span class="n">x6E</span><span class="p">;</span><span class="o">&amp;</span><span class="err">#</span><span class="n">x64</span><span class="p">;</span><span class="o">&amp;</span><span class="err">#</span><span class="n">x3F</span><span class="p">;</span>
+<span class="o">:</span><span class="n">D34thM3rch4nt</span><span class="o">!~</span><span class="n">blah2</span><span class="err">@</span><span class="mf">7FF</span><span class="mo">07</span><span class="n">A37</span><span class="mf">.29E7</span><span class="n">D414</span><span class="p">.</span><span class="n">B9027CEB</span><span class="p">.</span><span class="n">IP</span> <span class="n">PRIVMSG</span> <span class="err">#</span><span class="n">S3cr3tSp0t</span> <span class="o">:&amp;</span><span class="err">#</span><span class="n">x47</span><span class="p">;</span><span class="o">&amp;</span><span class="err">#</span><span class="n">x72</span><span class="p">;</span><span class="o">&amp;</span><span class="err">#</span><span class="n">x65</span><span class="p">;</span><span class="o">&amp;</span><span class="err">#</span><span class="n">x61</span><span class="p">;</span><span class="o">&amp;</span><span class="err">#</span><span class="n">x74</span><span class="p">;</span><span class="o">&amp;</span><span class="err">#</span><span class="n">x20</span><span class="p">;</span><span class="o">&amp;</span><span class="err">#</span><span class="n">x3A</span><span class="p">;</span><span class="o">&amp;</span><span class="err">#</span><span class="n">x29</span><span class="p">;</span><span class="o">&amp;</span><span class="err">#</span><span class="n">x20</span><span class="p">;</span><span class="o">&amp;</span><span class="err">#</span><span class="n">x77</span><span class="p">;</span><span class="o">&amp;</span><span class="err">#</span><span class="n">x68</span><span class="p">;</span><span class="o">&amp;</span><span class="err">#</span><span class="n">x61</span><span class="p">;</span><span class="o">&amp;</span><span class="err">#</span><span class="n">x74</span><span class="p">;</span><span class="o">&amp;</span><span class="err">#</span><span class="n">x20</span><span class="p">;</span><span class="o">&amp;</span><span class="err">#</span><span class="n">x74</span><span class="p">;</span><span class="o">&amp;</span><span class="err">#</span><span class="n">x69</span><span class="p">;</span><span class="o">&amp;</span><span class="err">#</span><span class="n">x6D</span><span class="p">;</span><span class="o">&amp;</span><span class="err">#</span><span class="n">x65</span><span class="p">;</span><span class="o">&amp;</span><span class="err">#</span><span class="n">x3F</span><span class="p">;</span>
+<span class="n">PRIVMSG</span> <span class="err">#</span><span class="n">S3cr3tSp0t</span> <span class="o">:&amp;</span><span class="err">#</span><span class="n">x61</span><span class="p">;</span><span class="o">&amp;</span><span class="err">#</span><span class="n">x68</span><span class="p">;</span><span class="o">&amp;</span><span class="err">#</span><span class="n">x20</span><span class="p">;</span><span class="o">&amp;</span><span class="err">#</span><span class="n">x32</span><span class="p">;</span><span class="o">&amp;</span><span class="err">#</span><span class="n">x70</span><span class="p">;</span><span class="o">&amp;</span><span class="err">#</span><span class="n">x6D</span><span class="p">;</span>
+<span class="o">:</span><span class="n">D34thM3rch4nt</span><span class="o">!~</span><span class="n">blah2</span><span class="err">@</span><span class="mf">7FF</span><span class="mo">07</span><span class="n">A37</span><span class="mf">.29E7</span><span class="n">D414</span><span class="p">.</span><span class="n">B9027CEB</span><span class="p">.</span><span class="n">IP</span> <span class="n">PRIVMSG</span> <span class="err">#</span><span class="n">S3cr3tSp0t</span> <span class="o">:&amp;</span><span class="err">#</span><span class="n">x4F</span><span class="p">;</span><span class="o">&amp;</span><span class="err">#</span><span class="n">x6B</span><span class="p">;</span><span class="o">&amp;</span><span class="err">#</span><span class="n">x2C</span><span class="p">;</span><span class="o">&amp;</span><span class="err">#</span><span class="n">x20</span><span class="p">;</span><span class="o">&amp;</span><span class="err">#</span><span class="n">x49</span><span class="p">;</span><span class="o">&amp;</span><span class="err">#</span><span class="n">x20</span><span class="p">;</span><span class="o">&amp;</span><span class="err">#</span><span class="n">x63</span><span class="p">;</span><span class="o">&amp;</span><span class="err">#</span><span class="n">x61</span><span class="p">;</span><span class="o">&amp;</span><span class="err">#</span><span class="n">x6E</span><span class="p">;</span><span class="o">&amp;</span><span class="err">#</span><span class="n">x27</span><span class="p">;</span><span class="o">&amp;</span><span class="err">#</span><span class="n">x74</span><span class="p">;</span><span class="o">&amp;</span><span class="err">#</span><span class="n">x20</span><span class="p">;</span><span class="o">&amp;</span><span class="err">#</span><span class="n">x77</span><span class="p">;</span><span class="o">&amp;</span><span class="err">#</span><span class="n">x61</span><span class="p">;</span><span class="o">&amp;</span><span class="err">#</span><span class="n">x69</span><span class="p">;</span><span class="o">&amp;</span><span class="err">#</span><span class="n">x74</span><span class="p">;</span><span class="o">&amp;</span><span class="err">#</span><span class="n">x21</span><span class="p">;</span>
+</pre></div>
 
 
-      <footer>
-        	<a href="./atom.xml" title="Feed(Atom)">atom</a> ·
-	<a href="./rss.xml" title="Feed (RSS)">rss</a> ·
-	html5 ·
-	css3 ·
-	<a href="http://creativecommons.org/licenses/by-nc-sa/3.0/at/" title="Creative Commons Attribution Noncommercial Share-alike License" rel="license">cc by-nc-sa</a> ·
-        <a class="switch-theme"></a>
-              </footer>
-    </div>
+<p>So we have Greg as "D34thM3rch4nt" in a channel called #S3cr3tSp0t (nice 1337 speak). Much of the text is found in hex codes that look like ASCII characters to me. So I opened up Python in a terminal window and applied a bit of knowledge I've learned while working on the Matasano Crypto Challenges recently:</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">re</span>
+<span class="n">s1</span><span class="o">=</span><span class="s">&#39;:&amp;#x48;&amp;#x6F;&amp;#x77;&amp;#x20;&amp;#x64;&amp;#x6F;&amp;#x65;&amp;#x73;&amp;#x20;&amp;#x57;&amp;#x65;&amp;#x64;&amp;#x6E;&amp;#x65;&amp;#x73;&amp;#x64;&amp;#x61;&amp;#x79;&amp;#x20;&amp;#x73;&amp;#x6F;&amp;#x75;&amp;#x6E;&amp;#x64;&amp;#x3F;&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">&quot;&amp;#x&quot;</span><span class="p">,</span><span class="s">&quot;&quot;</span><span class="p">,</span><span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">&quot;[:;]&quot;</span><span class="p">,</span><span class="s">&quot;&quot;</span><span class="p">,</span><span class="n">s1</span><span class="p">))</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">&#39;hex&#39;</span><span class="p">)</span>
+<span class="s">&#39;How does Wednesday sound?&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s2</span><span class="o">=</span><span class="s">&quot;:&amp;#x47;&amp;#x72;&amp;#x65;&amp;#x61;&amp;#x74;&amp;#x20;&amp;#x3A;&amp;#x29;&amp;#x20;&amp;#x77;&amp;#x68;&amp;#x61;&amp;#x74;&amp;#x20;&amp;#x74;&amp;#x69;&amp;#x6D;&amp;#x65;&amp;#x3F;&quot;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">&quot;&amp;#x&quot;</span><span class="p">,</span><span class="s">&quot;&quot;</span><span class="p">,</span><span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">&quot;[:;]&quot;</span><span class="p">,</span><span class="s">&quot;&quot;</span><span class="p">,</span><span class="n">s2</span><span class="p">))</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">&#39;hex&#39;</span><span class="p">)</span>
+<span class="s">&#39;Great :) what time?&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s3</span><span class="o">=</span><span class="s">&quot;:&amp;#x61;&amp;#x68;&amp;#x20;&amp;#x32;&amp;#x70;&amp;#x6D;&quot;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">&quot;&amp;#x&quot;</span><span class="p">,</span><span class="s">&quot;&quot;</span><span class="p">,</span><span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">&quot;[:;]&quot;</span><span class="p">,</span><span class="s">&quot;&quot;</span><span class="p">,</span><span class="n">s3</span><span class="p">))</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">&#39;hex&#39;</span><span class="p">)</span>
+<span class="s">&#39;ah 2pm&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s4</span><span class="o">=</span><span class="s">&quot;:&amp;#x4F;&amp;#x6B;&amp;#x2C;&amp;#x20;&amp;#x49;&amp;#x20;&amp;#x63;&amp;#x61;&amp;#x6E;&amp;#x27;&amp;#x74;&amp;#x20;&amp;#x77;&amp;#x61;&amp;#x69;&amp;#x74;&amp;#x21;&quot;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">&quot;&amp;#x&quot;</span><span class="p">,</span><span class="s">&quot;&quot;</span><span class="p">,</span><span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">&quot;[:;]&quot;</span><span class="p">,</span><span class="s">&quot;&quot;</span><span class="p">,</span><span class="n">s4</span><span class="p">))</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">&#39;hex&#39;</span><span class="p">)</span>
+<span class="s">&quot;Ok, I can&#39;t wait!&quot;</span>
+</pre></div>
 
-    <!-- javascript -->
-        <script type="text/javascript" src="/theme/js/jquery-1.7.2.min.js"></script>
-    <script type="text/javascript" src="/theme/js/jquery.cookie.js"></script>
-    <script type="text/javascript" src="/theme/js/theme-variants.js"></script>
-      </body>
+
+<p>That's fairly straightforward. (And yes, there are other, perhaps easier, ways to do this - as we'll see in later rounds.) We texted the answer "Wednesday" to the contest and got the password to Round2.tc.</p>
+<h2>Round 2</h2>
+<p>Password: <code>MTA567=@</code></p>
+<blockquote>
+<p>Betty attempts to keep her tracks covered as she establishes a meeting location with Gregory. 
+What city are they meeting? </p>
+</blockquote>
+<p>The pcap contains a lot more Google Images related traffic, including a red herring where somebody looks at a map of Irvine, CA. That's not the right answer. However, once we eliminate a lot of the chaff (HTTP/HTTPS/DNS), we find another IRC chat:</p>
+<div class="highlight"><pre><span class="n">PING</span> <span class="o">:</span><span class="n">tripwire</span><span class="o">.</span><span class="na">uk</span><span class="o">.</span><span class="na">eu</span><span class="o">.</span><span class="na">SwiftIRC</span><span class="o">.</span><span class="na">net</span>
+<span class="n">PONG</span> <span class="o">:</span><span class="n">tripwire</span><span class="o">.</span><span class="na">uk</span><span class="o">.</span><span class="na">eu</span><span class="o">.</span><span class="na">SwiftIRC</span><span class="o">.</span><span class="na">net</span>
+<span class="n">PING</span> <span class="o">:</span><span class="n">tripwire</span><span class="o">.</span><span class="na">uk</span><span class="o">.</span><span class="na">eu</span><span class="o">.</span><span class="na">SwiftIRC</span><span class="o">.</span><span class="na">net</span>
+<span class="n">PONG</span> <span class="o">:</span><span class="n">tripwire</span><span class="o">.</span><span class="na">uk</span><span class="o">.</span><span class="na">eu</span><span class="o">.</span><span class="na">SwiftIRC</span><span class="o">.</span><span class="na">net</span>
+<span class="n">NOTICE</span> <span class="n">D34thM3rch4nt</span> <span class="o">:</span><span class="n">DCC</span> <span class="n">Send</span> <span class="n">r3nd3zv0us</span> <span class="o">(</span><span class="mf">172.29</span><span class="o">.</span><span class="mf">1.50</span><span class="o">)</span>
+<span class="n">PRIVMSG</span> <span class="n">D34thM3rch4nt</span> <span class="o">:.</span><span class="n">DCC</span> <span class="n">SEND</span> <span class="n">r3nd3zv0us</span> <span class="mi">2887582002</span> <span class="mi">1024</span> <span class="mi">819200</span><span class="o">.</span>
+<span class="o">:</span><span class="n">tripwire</span><span class="o">.</span><span class="na">uk</span><span class="o">.</span><span class="na">eu</span><span class="o">.</span><span class="na">SwiftIRC</span><span class="o">.</span><span class="na">net</span> <span class="n">NOTICE</span> <span class="n">betty</span> <span class="o">:</span><span class="n">Message</span> <span class="n">to</span> <span class="n">D34thM3rch4nt</span> <span class="n">blocked</span><span class="o">:</span> <span class="n">Please</span> <span class="n">find</span> <span class="n">another</span> <span class="n">way</span> <span class="n">to</span> <span class="n">transfer</span> <span class="n">your</span> <span class="n">file</span>
+</pre></div>
+
+
+<p>A file named "r3nd3zv0us" sure does look interesting and relevant. I believe I'd like to see what's in that file. TCP stream 138 contains the private send, and we can extract the 819200 bytes sent. The file doesn't appear to be of any known format, though, so we need to keep looking. Back to the HTTP traffic, since not much is left outside that filter. It looks like <code>mail.aol.com</code> is one of the hosts, though, when we look at the HTTP objects available for export. I see that some of the HTML files look like messages, so sure enough: </p>
+<div class="highlight"><pre><span class="p">[{</span><span class="nt">&quot;isCertifiedMail&quot;</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span><span class="nt">&quot;inlineImgIds&quot;</span><span class="p">:[],</span><span class="nt">&quot;isVirusRepaired&quot;</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span><span class="nt">&quot;replyAllCcAddrs&quot;</span><span class="p">:</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="nt">&quot;isSuccess&quot;</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span><span class="nt">&quot;baseSubject&quot;</span><span class="p">:</span><span class="s2">&quot;Sorry&quot;</span><span class="p">,</span><span class="nt">&quot;attachments&quot;</span><span class="p">:[],</span><span class="nt">&quot;folderType&quot;</span><span class="p">:</span><span class="s2">&quot;Inbox&quot;</span><span class="p">,</span><span class="nt">&quot;hasLinksAndImages&quot;</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span><span class="nt">&quot;displayTo&quot;</span><span class="p">:</span><span class="s2">&quot;betty_swindoll &lt;betty_swindoll@aol.com&gt;&quot;</span><span class="p">,</span><span class="nt">&quot;sentTime&quot;</span><span class="p">:</span><span class="s2">&quot;03-Jul-2013 12:02:57 +0000&quot;</span><span class="p">,</span><span class="nt">&quot;isLikelyForward&quot;</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span><span class="nt">&quot;spamReason&quot;</span><span class="p">:</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="nt">&quot;displayBcc&quot;</span><span class="p">:</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="nt">&quot;receivedTime&quot;</span><span class="p">:</span><span class="mi">1372867377000</span><span class="p">,</span><span class="nt">&quot;bcc&quot;</span><span class="p">:[],</span><span class="nt">&quot;hasImages&quot;</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span><span class="nt">&quot;isRead&quot;</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span><span class="nt">&quot;knownSender&quot;</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span><span class="nt">&quot;to&quot;</span><span class="p">:[{</span><span class="nt">&quot;shorterDisplayForm&quot;</span><span class="p">:</span><span class="s2">&quot;betty_swindoll&quot;</span><span class="p">,</span><span class="nt">&quot;displayForm&quot;</span><span class="p">:</span><span class="s2">&quot;betty_swindoll &lt;betty_swindoll@aol.com&gt;&quot;</span><span class="p">,</span><span class="nt">&quot;userInputForm&quot;</span><span class="p">:</span><span class="s2">&quot;betty_swindoll@aol.com&quot;</span><span class="p">}],</span><span class="nt">&quot;isSeen&quot;</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span><span class="nt">&quot;isVoicemail&quot;</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span><span class="nt">&quot;isVirusScanned&quot;</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span><span class="nt">&quot;uid&quot;</span><span class="p">:</span><span class="s2">&quot;283&quot;</span><span class="p">,</span><span class="nt">&quot;hasAttachments&quot;</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span><span class="nt">&quot;replyAllAddrs&quot;</span><span class="p">:</span><span class="s2">&quot;d34thm3rch4nt@aol.com&quot;</span><span class="p">,</span><span class="nt">&quot;isSpam&quot;</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span><span class="nt">&quot;messageID&quot;</span><span class="p">:</span><span class="s2">&quot;&lt;8D0461DEADD2C15-1010-74B6B@webmail-m255.sysops.aol.com&gt;&quot;</span><span class="p">,</span><span class="nt">&quot;hasFailedSpfCheck&quot;</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span><span class="nt">&quot;displayFrom&quot;</span><span class="p">:</span><span class="s2">&quot;Greg Jensen &lt;d34thm3rch4nt@aol.com&gt;&quot;</span><span class="p">,</span><span class="nt">&quot;subject&quot;</span><span class="p">:</span><span class="s2">&quot;Re: Sorry&quot;</span><span class="p">,</span><span class="nt">&quot;isFlagged&quot;</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span><span class="nt">&quot;replyToAddrs&quot;</span><span class="p">:</span><span class="s2">&quot;d34thm3rch4nt@aol.com&quot;</span><span class="p">,</span><span class="nt">&quot;cc&quot;</span><span class="p">:[],</span><span class="nt">&quot;isDraft&quot;</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span><span class="nt">&quot;body&quot;</span><span class="p">:</span><span class="err">&quot;&lt;html&gt;</span>
+</pre></div>
+
+
+<p>There it is: <strong>S3cr3tVV34p0n</strong>. On a hunch, I attempted to mount the r3nd3zv0us file in TrueCrypt with that password, and it worked! The volume contains three files: a text note, a video file, and a JPEG. The text note just says "See You Soon! Betty" and I couldn't get the video file to play on my system. The JPEG file, though, contained an image of the famous "Welcome to Fabulous Las Vegas, Nevada" sign. </p>
+<p><img alt="Las Vegas" src="http://technoskald.github.io/netfor-dc2013/static/images/lv.jpg" /></p>
+<h2>Round 3</h2>
+<p>Password: <code>spT6745@@&amp;%</code></p>
+<blockquote>
+<p>Gregory is hesitant to meet with the mysterious Betty. While working late in the office, Gregory hears his phone ring. He checks his phone and knows he has no choice but to attend the meeting with Betty. 
+What will Gregory die from, if he fails to meet with Betty? </p>
+</blockquote>
+<p>Well this is a clue. What's on his phone? According to the HTTP object export, packet 390 starts a stream containing a file of around 140k bites from mmsc.cingular.com. Multimedia Messaging Service from Cingular (now AT&amp;T Wireless) sounds very relevant to the prompt, so we look at the stream, which is a little complicated. Wireshark does a good job of decoding it, and it has a multipart body containing a small application/smil object and a larger video/mp4 object of 139505 bytes. In order to see this video, we have to carve out this particular object. Saving the HTTP object, we get a file of 140046 bytes that our media player can't read, since the header makes it look like a Synchronized Multimedia Integration Language file. We only want the last 139505 bytes. Unix provides the dd tool to do just this (read and write specific byte regions of a file), so we can run <code>dd if=mmsc.cingular.com of=video.mp4 bs=1 skip=541</code> to get the MP4 file that starts after 541 bytes.</p>
+<p>Watching the file, we see a document titled "<strong>TOP SECRET</strong>" and hear a woman's voice threatening to release some files, then saying "remember who you're dealing with" as the camera pans to a printout of an Oregon Trail image that says "you have died of dysentery". Weird threat, but that's the answer: "dysentery".</p>
+<p><img alt="You have died of dysentery" src="http://technoskald.github.io/netfor-dc2013/static/images/dysentery.jpg" /></p>
+<h2>Round 4</h2>
+<p>Password: <code>MP42%!@</code></p>
+<blockquote>
+<p>Gregory, still unsure of Betty's true identity, meets with a group identifying themselves as Betty's Associates. They gave him a list of demands including numbers to bank accounts, and additional secret documents. Betty's Associates told Gregory he will be provided with information regarding the delivery of the goods. 
+What is the password provided to Gregory? </p>
+</blockquote>
+<p>This turned out to be one of the more complicated rounds, largely due to simple user issues. First we noticed traffic between the user and mail.aol.com, so we looked at the messages and found something relevant:</p>
+<blockquote>
+<p>I'm so happy you made it. :) We should see a concert! How about Rod Stewart, the hits. Second Mezzanine, Section 4, Row H, Seat 410.You know the location and password for the drop. We should get dinner afterwards!</p>
+</blockquote>
+<p>That gives us context but it's not actually the password - she's telling him he already knows it. That means we need to go back and see what else... wait, there's more to the message. It's all in escaped HTML, though, which is a pain to read, and there's a lot of it, unlike Round 1. I could never quite get it to format properly (at least not without more time than we wanted to spend), so one of my team mates working in parallel with a different toolset broke out NetworkMiner. That yielded a decently-formatted KML file for use in Google Earth. This took a bit of doing, as up until this point we were working on entirely air-gapped systems, being at DEF CON and all. However, if we wanted to finish, we needed to take some risks, so we installed the application and saved off the KML. Apparently we didn't get <strong>all</strong> the encodings right, so it took one tiny bit of manual cleanup, guided by error messages from Google Earth. That didn't take too long, and we had the word "Brutus" spelled in cursive right over the map of Caesar's Palace, Las Vegas. On to the next round.</p>
+<p><img alt="Brutus" src="http://technoskald.github.io/netfor-dc2013/static/images/brutus.jpg" /></p>
+<h2>Round 5</h2>
+<p>Password: <code>C4M1121**</code></p>
+<blockquote>
+<p>Gregory is missing! He was supposed to meet up with Betty and deliver the goods. After that, the trail quickly goes cold. A strange shipment has arrived to the offices of Rock Solid Investigations. Jack Stone opens the package and discovers a note and a cell phone. Jack immediately sends the cell phone to you, the forensic investigator. What happened to Gregory? </p>
+</blockquote>
+<p>Wait, what? This isn't network forensics, is it? But just like in real life, we don't always get to pick the sorts of evidence available. The data file this time did not consist of a PCAP but rather a file dump apparently from a Huawei Fusion 2 phone running Android. I don't know much about Android, that's going to be a pain. But let's open it up.</p>
+<p>"This is Unix! I know this!"</p>
+<p>Oh yeah, Android is Linux: not GNU/Linux, but Android/Linux. The directory "/HWUserData" looks like it's analogous to "/home", and when we poke around, we find a "DCIM" folder that contains a JPG of some dude laid out cold in an alley next to a trash can. Could this be Gregory? Where is it? In "/HWUserData/Android/data/com.cooliris.media/cache/", we find a number of images of his body, laid at different angles. The assailant (killer) posed his body a few different ways for the camera, playing with us. Sickos! We didn't find any geolocation data in the images, unfortunately, and this didn't look like enough to answer the question. We found lots of other data about the contest (like the email addresses they appeared to use), but it clearly didn't fit the storyline. Finally in "/data/data/com.android.browser/cache/webviewCache/6835a5ae" we found a JSON file that indicated he'd been checking the weather in Seattle, WA. The answer "Killed in Seattle" got us to the next round.</p>
+<p><img alt="Image of body" src="http://technoskald.github.io/netfor-dc2013/static/images/IMG_20130705_150833.jpg" /></p>
+<h2>Round 6</h2>
+<p>Password: <code>burt22$#@</code></p>
+<blockquote>
+<p>Mrs. Jensen decides to look further into this strange email. She decides to check her account balances to ensure she still has access to her accounts. How many bytes of data is the malicious payload? </p>
+</blockquote>
+<p>Malicious payloads sound much more like the network forensics to which we're accustomed. But this round is too easy for words. (After the last two, that's a welcome change.) The PCAP contains some HTTP and HTTPS traffic, and sure enough, there's only one interesting HTTP object, and that's a highly-obfuscated and suspicious Javascript file from paimia.com (not reproduced here because it really is live malware). According to <a href="https://www.virustotal.com/en/domain/paimia.com/information/">VirusTotal</a>, that's a very bad place with all sorts of exploits served.</p>
+<p>We dithered a bit about whether they wanted the de-obfuscated payload, but the correct answer is literally the size of that script: 3113 bytes. Time to move on, we're getting close to the end of these eight volumes.</p>
+<h2>Round 7</h2>
+<p>Password: <code>Haxxor*&amp;%</code></p>
+<blockquote>
+<p>Mrs. Jensen decides to look further into this strange email. She decides to check her account balances to ensure she still has access to her accounts. What is the URL of the false(Malicious) web page Victoria is directed to? </p>
+</blockquote>
+<p>This turned out to be one of the rounds I didn't like, for the sole reason that it wasn't a good answer. So when we look at the packets in Wireshark, we can see that she goes to bankofamerica.com, and in the middle of that she also hits bankofamerica.tt.omtrdc.net. Immediately thereafter, she searches Google for the phrase "why is my bank of america account not working?" So it turns out that that domain name is the right answer, but it isn't really: omtrdc.net is part of Omniture, which is a legitimate advertising network. I can't tell whether BofA does business with them, so it's possible she got some malicious ad, but in any case it's right and we move onto the final round.</p>
+<h2>Round 8</h2>
+<p>Password: <code>FIN-ACK@@##$</code></p>
+<blockquote>
+<p>As Jack is wrapping up the case, he learns that the mystery is far from over. Who killed Gregory? </p>
+</blockquote>
+<p>The PCAP contains something really interesting this time: lots of VOIP traffic. Wireshark has functions specifically designed to handle this, so we select "Telephony &gt; VoIP calls" and see two listed. Once we listen, we find out the deep, dark secret.</p>
+<p>"Hi, this is Victoria? Hello Victoria, it's Jack Stone. I just wanted to call and give you an update about your case. Turns out, Gregory wasn't cheating on you at all. However, I do have some bad news about Sir Gregory. <em>background noise</em> Y-y-you killed him. I kinda think you might be wanted for murder. So, about that..."</p>
+<p>And sure enough: Victoria his wife killed him. </p>
+<h2>Lessons learned</h2>
+<p>In contest terms, we learned a few things for next year:</p>
+<ul>
+<li>Some contests don't really announce anything until 3-4 weeks before DEF CON. So don't think about it too much until July.</li>
+<li>Think about logistics: Have a designated "office" in somebody's hotel room, possibly a runner or other support person to go to contest area, and food &amp; beverages on hand.</li>
+<li>Work in parallel: have team members working on different approaches using different tools at the same time.</li>
+</ul>
+<p>In network forensics terms, I learned a lot about tools other than Wireshark and Python: NetworkMiner, Bro, chaosreader, other stuff in SecurityOnion.</p>            </article>
+                                
+        <footer>
+            <nav>
+                <ul>
+                                                                </ul>
+            </nav>
+                <p id="theme-credit">Proudly powered by <a href="http://docs.notmyidea.org/alexis/pelican/">pelican</a></p>
+        </footer>
+
+</body>
 </html>

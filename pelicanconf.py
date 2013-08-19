@@ -10,7 +10,7 @@ TIMEZONE = 'US/Central'
 
 DEFAULT_LANG = u'en'
 
-THEME = 'pelican-solarized'
+THEME = 'nmnlist'
 
 # Feed generation is usually not desired when developing
 FEED_ALL_ATOM = None
